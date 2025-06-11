@@ -37,7 +37,7 @@ fn read_jsonstat() {
     
         assert_eq!(dataset.version, Version::V2_0);
         assert_eq!(dataset.class, Class::Dataset);
-        assert_eq!(dataset.label.unwrap(), String::from("Population in Tuvalu in 2002. By sex"));
+        assert_eq!(dataset.label.clone().unwrap(), String::from("Population in Tuvalu in 2002. By sex"));
         assert_eq!(dataset.id, [String::from("metric"), String::from("time"), String::from("geo"), String::from("sex")]);
-        assert_eq!(dataset.size, [1, 1, 1, 3]);    
-}
+        assert_eq!(dataset.size, [1, 1, 1, 3]);
+} 

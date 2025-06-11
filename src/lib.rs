@@ -126,19 +126,63 @@ pub struct JsonStat {
 }
 
 #[derive(Debug, Deserialize, Serialize)]
+pub struct JsonStatCollection {
+    pub version: Version,
+    pub class: Class,
+    pub label: Option<String>,
+    pub updated: Option<Updated>,
+    pub extension: Option<Extension>,
+    pub href: Option<String>,
+    pub link: Option<HashMap<String, Vec<Link>>>,
+}
+
+impl TryFrom<JsonStat> for JsonStatCollection {
+    type Error = ();
+
+    fn try_from(x: JsonStat) -> Result<Self, Self::Error> {
+        if x.class != Class::Collection {
+            return Err(())
+        }
+
+        if x.category.is_some() {
+            return Err(())
+        }
+
+        Ok(JsonStatCollection {
+            version: x.version,
+            class: x.class,
+            label: x.label,
+            updated: x.updated,
+            extension: x.extension,
+            href: x.href,
+            link: x.link,
+        })
+    }
+}
+
+
+#[derive(Debug, Deserialize, Serialize)]
 pub struct JsonStatDataset {
     pub version: Version,
     pub class: Class,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub label: Option<String>,
     pub id: Vec<String>,
     pub size: Vec<u32>,
     pub value: StatValue,
     pub dimension: HashMap<String, Dimension>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub updated: Option<Updated>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub extension: Option<Extension>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub href: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub role: Option<Role>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub status: Option<Status>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub link: Option<HashMap<String, Vec<Link>>>,
 }
 
 impl TryFrom<JsonStat> for JsonStatDataset {
@@ -166,6 +210,7 @@ impl TryFrom<JsonStat> for JsonStatDataset {
             href: x.href,
             role: x.role,
             status: x.status,
+            link: x.link,
         })
     }
 }

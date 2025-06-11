@@ -13,8 +13,9 @@ fn read_from_url(url: &str) -> JsonStat {
 #[test]
 fn can_read_samples_list() {
     let datasets = read_from_url("https://json-stat.org/samples/datasets/index.json");
+    let coll = JsonStatCollection::try_from(datasets).unwrap();
     assert_eq!(
-        datasets.link.unwrap()["item"].len(),
+        coll.link.unwrap()["item"].len(),
         8
     )
 }
