@@ -32,7 +32,7 @@ pub enum Class {
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(untagged)]
 pub enum StatValue {
-    Array(Vec<f64>),
+    Array(Vec<Option<f64>>),
     Dictionary(HashMap<String, f64>),
 }
 
@@ -102,7 +102,7 @@ pub struct LinkJsonStat {
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct LinkOther {
-    #[serde(rename="link")]
+    #[serde(rename="type")]
     linktype: String,
     href: String,
 }
